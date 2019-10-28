@@ -45,6 +45,15 @@ public class ApiExceptionHandler {
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 
+	@ExceptionHandler(BusinessException.class)
+	public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException exception, Locale locale){
+		final String errorCode = exception.getCode();
+		final HttpStatus status = exception.getStatus();
+
+		final ErrorResponse errorResponse = ErrorResponse.of(status, toApiError(errorCode, locale));
+		return ResponseEntity.badRequest().body(errorResponse);
+	}
+
 	@ExceptionHandler(InvalidFormatException.class)
 	public ResponseEntity<ErrorResponse> handleInvalidFormatException(InvalidFormatException exception, Locale locale){
 		final String errorCode = "generic-1";
